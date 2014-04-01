@@ -13,8 +13,8 @@ import java.util.List;
 
 @Path("tasks")
 @Stateless
-@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class TaskResources {
 
     @Inject
