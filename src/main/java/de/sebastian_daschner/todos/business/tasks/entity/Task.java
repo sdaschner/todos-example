@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity(name = "tasks")
@@ -14,8 +15,7 @@ public class Task {
     private long id;
 
     @NotNull
-    @Min(1)
-    @Max(255)
+    @Size(min = 1, max = 255)
     @Basic(optional = false)
     private String name;
 
@@ -26,4 +26,35 @@ public class Task {
     @Temporal(TemporalType.DATE)
     private Date dueDate;
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Date getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Date updated) {
+        this.updated = updated;
+    }
+
+    public Date getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
+    }
 }

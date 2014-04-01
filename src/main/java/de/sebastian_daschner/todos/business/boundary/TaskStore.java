@@ -5,6 +5,7 @@ import de.sebastian_daschner.todos.business.tasks.entity.Task;
 import javax.ejb.ConcurrencyManagement;
 import javax.ejb.ConcurrencyManagementType;
 import javax.ejb.Singleton;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,9 @@ public class TaskStore {
 
     public long save(Task task) {
         final long taskId = next.getAndIncrement();
+        task.setId(taskId);
+        task.setUpdated(new Date());
+
         tasks.put(taskId, task);
 
         return taskId;
