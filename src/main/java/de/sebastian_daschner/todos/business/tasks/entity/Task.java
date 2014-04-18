@@ -1,11 +1,10 @@
 package de.sebastian_daschner.todos.business.tasks.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.Set;
 
 @Entity(name = "tasks")
 public class Task {
@@ -18,6 +17,13 @@ public class Task {
     @Size(min = 1, max = 255)
     @Basic(optional = false)
     private String name;
+
+    @Contexts
+    private Set<String> contexts;
+
+    private Integer priority;
+
+    private boolean finished;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date updated;
@@ -42,6 +48,30 @@ public class Task {
         this.name = name;
     }
 
+    public Set<String> getContexts() {
+        return contexts;
+    }
+
+    public void setContexts(Set<String> contexts) {
+        this.contexts = contexts;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Integer priority) {
+        this.priority = priority;
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
+
     public Date getUpdated() {
         return updated;
     }
@@ -57,4 +87,18 @@ public class Task {
     public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
     }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", contexts=" + contexts +
+                ", priority=" + priority +
+                ", finished=" + finished +
+                ", updated=" + updated +
+                ", dueDate=" + dueDate +
+                '}';
+    }
+
 }

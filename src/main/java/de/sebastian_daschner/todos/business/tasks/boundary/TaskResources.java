@@ -1,4 +1,4 @@
-package de.sebastian_daschner.todos.business.boundary;
+package de.sebastian_daschner.todos.business.tasks.boundary;
 
 import de.sebastian_daschner.todos.business.tasks.entity.Task;
 
@@ -22,7 +22,6 @@ public class TaskResources {
 
     @GET
     public List<Task> listAll() {
-
         return taskStore.listAll();
     }
 
