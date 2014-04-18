@@ -64,8 +64,10 @@ public class TaskStore {
         if (!filter.getContexts().isEmpty() && task.getContexts().stream().noneMatch(c -> filter.getContexts().contains(c))) {
             return false;
         }
-        if (filter.getPriorityThreshold() != null && filter.getPriorityThreshold().equals(task.getPriority())) {
-            return false;
+        if (filter.getPriorityThreshold() != null) {
+            if (task.getPriority() == null || filter.getPriorityThreshold().compareTo(task.getPriority()) >= 0) {
+                return false;
+            }
         }
         return true;
     }
