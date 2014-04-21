@@ -6,10 +6,7 @@ import de.sebastian_daschner.todos.business.tasks.entity.Task;
 import javax.ejb.ConcurrencyManagement;
 import javax.ejb.ConcurrencyManagementType;
 import javax.ejb.Singleton;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
@@ -23,12 +20,16 @@ public class TaskStore {
     private AtomicLong next = new AtomicLong(0L);
 
     public List<Task> listAll() {
-        return new LinkedList<>(tasks.values());
+        final List<Task> allTasks = new LinkedList<>(tasks.values());
+
+        Collections.sort(allTasks);
+        return allTasks;
     }
 
     public List<Task> filterAll(final Filter filter) {
         final List<Task> filteredTasks = tasks.values().stream().filter(t -> matches(t, filter)).collect(Collectors.toList());
 
+        Collections.sort(filteredTasks);
         return filteredTasks;
     }
 

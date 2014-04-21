@@ -17,7 +17,7 @@ import java.util.List;
 @Stateless
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class FilterResources {
+public class FiltersResource {
 
     @Inject
     TaskStore taskStore;

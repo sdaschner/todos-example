@@ -1,0 +1,107 @@
+/* Stylesheet for todos.sebastian-daschner.de */
+
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 0.8em;
+}
+
+html, body, div, img, a, p {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.full {
+    width: 50em;
+    margin: 0 auto;
+}
+
+.task {
+    font-size: 1.1em;
+    clear:both;
+}
+
+.task.finished {
+    text-decoration: line-through;
+}
+
+.task:hover {
+    background: #eee;
+}
+
+#tasks .task:hover .button {
+    display: inline-block;
+}
+
+.button {
+    display: inline-block;
+    background: #ccc;
+    padding: 0.2em;
+    border: 1px solid #aaa;
+    cursor: pointer;0
+    font-size: 1.0em;
+    border-radius: 0.2em;
+}
+
+#tasks .button {
+    text-align: center;
+    font-size: 0.75em;
+    padding: 0.125em 0.1em;
+    margin-left: 0.4em;
+    display: none;
+    float: right;
+}
+
+.invisible {
+    position: absolute;
+    left: -9999px;
+}
+
+.hide {
+    display: none;
+}
+
+input.error {
+    border: 1px solid #f00;
+    color: #f00;
+}
+
+input[type=text] {
+    width: 25em;
+    margin: 0px 0.2em 0 0;
+    border: 1px solid #bbb;
+    border-radius: 0.2em;
+    height: 1.4em;
+    font-size: 1em;
+    padding: 0.2em;
+    vertical-align: top;
+}
+
+form#filterTasks {
+    margin-bottom: 0.4em;
+}
+
+div#tasks {
+    margin-top: 1.4em;
+    font-size: 1.2em;
+}
+
+div#loading {
+    margin-top: 1.2em;
+    font-size: 1.2em;
+}
+
+.context {
+    color: #6cf;
+    cursor: pointer;
+}

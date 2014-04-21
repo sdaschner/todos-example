@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sebastian's TODO's</title>
+    <meta charset="utf-8"/>
+    <link href="http://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="js/script.js"></script>
+</head>
+<body>
+    <div class="full">
+        <h1>Tasks</h1>
+        <form id="filterTasks" action="#">
+            <input name="filter" id="filterTasks_filter" type="text" />
+            <a class="filter button" href="#">Filter</a>
+            <a class="resetFilter button hide" href="#">Remove</a>
+            <input class="invisible" type="submit" />
+        </form>
+        <form id="addTask" action="#">
+            <input name="name" id="addTask_name" type="text" />
+            <a class="addTask button" href="#">Add</a>
+            <input class="invisible" type="submit" />
+        </form>
+        <div id="loading">Loading tasks ...</div>
+        <div id="tasks"></div>
+    </div>
+</body>
+</html>

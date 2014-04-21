@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.Set;
 
 @Entity(name = "tasks")
-public class Task {
+public class Task implements Comparable<Task> {
 
     @Id
     @GeneratedValue
@@ -101,4 +101,23 @@ public class Task {
                 '}';
     }
 
+    @Override
+    public int compareTo(Task task) {
+        if (task == null) {
+            return -1;
+        }
+        // sort by finished state
+        if (this.finished || task.finished) {
+            if (this.finished && !task.finished) {
+                return 1;
+            } else if (!this.finished && task.finished) {
+                return -1;
+            }
+        }
+        // either both or none are finished
+        if (this.updated != null && task.updated != null) {
+            return this.updated.compareTo(task.updated);
+        }
+        return this.name.compareToIgnoreCase(task.name);
+    }
 }
