@@ -118,9 +118,7 @@ public class Task implements Comparable<Task> {
 
     @Override
     public int compareTo(Task task) {
-        if (task == null) {
-            return -1;
-        }
+
         // sort by finished state
         if (this.finished || task.finished) {
             if (this.finished && !task.finished) {
@@ -129,6 +127,7 @@ public class Task implements Comparable<Task> {
                 return -1;
             }
         }
+
         // either both or none are finished
         if (this.updated != null && task.updated != null) {
             return this.updated.compareTo(task.updated);
