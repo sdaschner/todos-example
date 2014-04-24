@@ -15,7 +15,7 @@
  */
 package de.sebastian_daschner.todos.business.tasks.entity;
 
-import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 
 public class Filter {
@@ -23,7 +23,7 @@ public class Filter {
     private String text;
 
     @Contexts
-    private Set<String> contexts;
+    private Set<String> contexts = new HashSet<>();
 
     private Integer priorityThreshold;
 
