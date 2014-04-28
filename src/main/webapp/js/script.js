@@ -101,7 +101,57 @@ de.sd.todos = {
             .on('click', 'a.reactivate', function(ev) {
                 ev.preventDefault();
                 de.sd.todos.reactivateTask(jQuery(this).attr('data-id'));
-            });
+            })
+            // edit task link
+            .on('click', 'a.edit', function(ev) {
+                ev.preventDefault();
+                var $parentNode = jQuery(this).parent(),
+                    $taskContent = $parentNode.find('.taskContent'),
+                    taskText = $taskContent.text(),
+                    taskId = jQuery(this).attr('data-id')
+                ;
+                $taskContent.remove();
+                $parentNode.prepend('<form class="editTask" action="#" data-id="'+taskId+'"><input type="text" /><input class="invisible" type="submit" /></form>');
+                $parentNode
+                    .find('input[type=text]')
+                        .val(taskText)
+                    .end()
+                    .find('a')
+                        .remove()
+                    .end()
+                        .append('<a class="change button" href="#">Change</a>')
+                ;
+
+                // focus on last char
+                var $input = $parentNode.find('input[type=text]'),
+                    inputLength= $input.val().length;
+                $input.focus();
+                $input[0].setSelectionRange(inputLength, inputLength);
+            })
+            // submit edit task submit
+            .on('submit', 'form.editTask', function(ev) {
+                ev.preventDefault();
+
+                var $this = jQuery(this),
+                    $input = $this.find('input[type=text]'),
+                    inputText = $input.val()
+                ;
+                if (!/^[^@]*(@[a-z]+\s*)*$/.test(inputText)) {
+                    $input.addClass("error");
+                    return;
+                }
+                $input.removeClass("error");
+
+                var values = de.sd.todos.extractValues(inputText);
+
+                de.sd.todos.changeTask($this.attr('data-id'), values.name, values.contexts);
+            })
+            // submit edit task link
+            .on('click', 'a.change', function(ev) {
+                ev.preventDefault();
+                jQuery(this).parent().find('form').trigger('submit');
+            })
+        ;
     },
 
     addTask: function(name, contexts) {
@@ -123,6 +173,46 @@ de.sd.todos = {
                 } else {
                     de.sd.todos.loadTasks();
                     jQuery('input#addTask_name').val('');
+                }
+            }
+        });
+    },
+
+    changeTask: function(id, name, contexts) {
+
+        jQuery.ajax({
+            type: 'GET',
+            url: de.sd.todos.tasksUrl+id,
+            error: function() {
+                alert('Could not edit task.');
+            },
+            success: function(data, status, jqXHR) {
+                if (Math.floor(jqXHR.status / 100) != 2) {
+                    // TODO add X-message header
+                    alert('Could not edit task');
+                } else {
+                    data.name = name;
+                    data.contexts = contexts;
+                    jQuery.ajax({
+                        type: 'PUT',
+                        url: de.sd.todos.tasksUrl+id,
+                        data: JSON.stringify(data),
+                        contentType: 'application/json',
+                        error: function() {
+                            alert('Could not edit task.');
+                        },
+                        success: function(data, status, jqXHR) {
+                            if (Math.floor(jqXHR.status / 100) != 2) {
+                                // TODO add X-message header
+                                alert('Could not edit task');
+                            } else if (de.sd.todos.filterQuery) {
+                                jQuery('input#filterTasks_filter').val(de.sd.todos.filterQuery);
+                                jQuery('form#filterTasks').trigger('submit');
+                            } else {
+                                de.sd.todos.loadTasks();
+                            }
+                        }
+                    });
                 }
             }
         });
@@ -252,13 +342,15 @@ de.sd.todos = {
         var $tasks = jQuery('div#tasks').empty();
 
         for (var i in tasks) {
-            var content = '<div class="task'+(tasks[i].finished ? ' finished' : '')+'">'+tasks[i].name+' ';
+            var content = '<div class="task'+(tasks[i].finished ? ' finished' : '')+'"><span class="taskContent">'+tasks[i].name;
             for (var j in tasks[i].contexts) {
                 content += '<span class="context">@'+tasks[i].contexts[j]+'</span> ';
             }
-            content += '<a class="delete button" href="#" data-id="'+tasks[i].id+'" data-name="'+tasks[i].name+'">Delete</a>'
+            content += '</span>'
+                +'<a class="delete button" href="#" data-id="'+tasks[i].id+'" data-name="'+tasks[i].name+'">Delete</a>'
                 +'<a class="'+(tasks[i].finished ? 'reactivate' : 'finish')+' button" href="#" data-id="'+tasks[i].id+'">'
                 +(tasks[i].finished ? 'Reactivate' : 'Done')+'</a>'
+                +'<a class="edit button" href="#" data-id="'+tasks[i].id+'">Edit</a>'
                 +'</div>';
 
             $tasks.append(content);

@@ -73,11 +73,11 @@ public class TaskStore {
         tasks.remove(taskId);
     }
 
-    private static boolean matches(Task task, Filter filter) {
-        if (filter.getText() != null && task.getName().toLowerCase().indexOf(filter.getText()) < 0) {
+    private boolean matches(Task task, Filter filter) {
+        if (filter.getText() != null && !task.getName().toLowerCase().contains(filter.getText())) {
             return false;
         }
-        if (!filter.getContexts().isEmpty() && task.getContexts().stream().noneMatch(c -> filter.getContexts().contains(c))) {
+        if (!filter.getContexts().isEmpty() && task.getContexts().stream().noneMatch(filter.getContexts()::contains)) {
             return false;
         }
         if (filter.getPriorityThreshold() != null) {

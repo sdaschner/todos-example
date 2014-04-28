@@ -131,7 +131,8 @@ public class Task implements Comparable<Task> {
 
         // either both or none are finished
         if (this.updated != null && task.updated != null) {
-            return this.updated.compareTo(task.updated);
+            // reverse order
+            return task.updated.compareTo(this.updated);
         }
         return this.name.compareToIgnoreCase(task.name);
     }

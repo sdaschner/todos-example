@@ -57,9 +57,8 @@ public class TasksResource {
     @PUT
     @Path("{id}")
     public Response update(@PathParam("id") final long taskId, @Valid final Task task) throws Exception {
-//        taskStore.update(taskId, task);
-//        return Response.noContent().build();
-        throw new Exception("could not update");
+        taskStore.update(taskId, task);
+        return Response.noContent().build();
     }
 
     @DELETE

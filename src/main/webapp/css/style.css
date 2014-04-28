@@ -101,6 +101,16 @@ input[type=text] {
     vertical-align: top;
 }
 
+.task input[type=text] {
+    font-size: 0.8em;
+    height: auto;
+    border: none;
+}
+
+form.editTask {
+    display: inline;
+}
+
 form#filterTasks {
     margin-bottom: 0.4em;
 }
