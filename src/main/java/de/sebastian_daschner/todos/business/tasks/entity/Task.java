@@ -35,7 +35,7 @@ public class Task {
     private String name;
 
     @Contexts
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> contexts;
 
     private Integer priority;
@@ -47,7 +47,6 @@ public class Task {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updated;
 
-    @Basic(optional = false)
     @Temporal(TemporalType.DATE)
     private Date dueDate;
 
