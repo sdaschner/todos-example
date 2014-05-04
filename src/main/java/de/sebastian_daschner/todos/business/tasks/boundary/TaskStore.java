@@ -18,59 +18,47 @@ package de.sebastian_daschner.todos.business.tasks.boundary;
 import de.sebastian_daschner.todos.business.tasks.entity.Filter;
 import de.sebastian_daschner.todos.business.tasks.entity.Task;
 
-import javax.ejb.ConcurrencyManagement;
-import javax.ejb.ConcurrencyManagementType;
-import javax.ejb.Singleton;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
-@Singleton
-@ConcurrencyManagement(ConcurrencyManagementType.BEAN)
+@Stateless
 public class TaskStore {
 
-    private Map<Long, Task> tasks = new ConcurrentHashMap<>();
-
-    private AtomicLong next = new AtomicLong(0L);
+    @PersistenceContext
+    EntityManager entityManager;
 
     public List<Task> listAll() {
-        final List<Task> allTasks = new LinkedList<>(tasks.values());
-
-        Collections.sort(allTasks);
-        return allTasks;
+        return entityManager.createNamedQuery("Task.findAll").getResultList();
     }
 
     public List<Task> filterAll(final Filter filter) {
-        final List<Task> filteredTasks = tasks.values().stream().filter(t -> matches(t, filter)).collect(Collectors.toList());
-
-        Collections.sort(filteredTasks);
-        return filteredTasks;
+        return listAll().parallelStream().filter(t -> matches(t, filter)).collect(Collectors.toList());
     }
 
-    public Task get(long taskId) {
-        return tasks.get(taskId);
+    public Task get(final long taskId) {
+        return entityManager.find(Task.class, taskId);
     }
 
-    public long save(Task task) {
-        final long taskId = next.getAndIncrement();
-        task.setId(taskId);
-        task.setUpdated(new Date());
+    public long save(final Task task) {
+        final Task managedTask = entityManager.merge(task);
+        entityManager.flush();
 
-        tasks.put(taskId, task);
-
-        return taskId;
+        return managedTask.getId();
     }
 
-    public void update(long taskId, Task task) {
-        task.setId(taskId);
-        task.setUpdated(new Date());
-
-        tasks.put(taskId, task);
+    public void update(final Task task) {
+        entityManager.merge(task);
+        entityManager.flush();
     }
 
-    public void delete(long taskId) {
-        tasks.remove(taskId);
+    public void delete(final long taskId) {
+        final Task managedTask = entityManager.find(Task.class, taskId);
+        entityManager.remove(managedTask);
+        entityManager.flush();
     }
 
     private boolean matches(Task task, Filter filter) {

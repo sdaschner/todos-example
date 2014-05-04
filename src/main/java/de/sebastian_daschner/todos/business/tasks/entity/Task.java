@@ -19,11 +19,11 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
+@NamedQuery(name = "Task.findAll", query = "SELECT t from tasks t ORDER BY t.finished ASC, t.updated DESC, t.name ASC")
 @Entity(name = "tasks")
-public class Task implements Comparable<Task> {
+public class Task {
 
     @Id
     @GeneratedValue
@@ -35,18 +35,27 @@ public class Task implements Comparable<Task> {
     private String name;
 
     @Contexts
+    @ElementCollection
     private Set<String> contexts;
 
     private Integer priority;
 
+    @Basic(optional = false)
     private boolean finished;
 
+    @Basic(optional = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date updated;
 
     @Basic(optional = false)
     @Temporal(TemporalType.DATE)
     private Date dueDate;
+
+    @PrePersist
+    @PreUpdate
+    public void updateDate() {
+        this.updated = new Date();
+    }
 
     public long getId() {
         return id;
@@ -117,23 +126,4 @@ public class Task implements Comparable<Task> {
                 '}';
     }
 
-    @Override
-    public int compareTo(Task task) {
-
-        // sort by finished state
-        if (this.finished || task.finished) {
-            if (this.finished && !task.finished) {
-                return 1;
-            } else if (!this.finished && task.finished) {
-                return -1;
-            }
-        }
-
-        // either both or none are finished
-        if (this.updated != null && task.updated != null) {
-            // reverse order
-            return task.updated.compareTo(this.updated);
-        }
-        return this.name.compareToIgnoreCase(task.name);
-    }
 }
