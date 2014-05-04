@@ -15,21 +15,23 @@
  */
 package de.sebastian_daschner.todos.business;
 
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 /**
- * ExceptionMapper for all uncaught exceptions. The returned response contains no data as the exception message
- * is transferred via extended HTTP header.
+ * ExceptionMapper to ensure that the WebApplicationExceptions are not handled by the GlobalExceptionMapper
+ * (e.g. the HTTP status codes need to be the same).
+ *
+ * @see GlobalExceptionMapper
  */
 @Provider
-public class GlobalExceptionMapper implements ExceptionMapper<Exception> {
+public class WebApplicationExceptionMapper implements ExceptionMapper<WebApplicationException> {
 
-    // TODO add constraint violation exception mapper as well
     @Override
-    public Response toResponse(Exception exception) {
-        return Response.status(Response.Status.BAD_REQUEST).header("X-message", exception.getMessage()).build();
+    public Response toResponse(WebApplicationException exception) {
+        return Response.fromResponse(exception.getResponse()).build();
     }
 
 }
