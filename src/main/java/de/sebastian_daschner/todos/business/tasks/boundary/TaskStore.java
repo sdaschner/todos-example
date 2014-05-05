@@ -35,7 +35,7 @@ public class TaskStore {
     }
 
     public List<Task> filterAll(final Filter filter) {
-        return listAll().parallelStream().filter(t -> matches(t, filter)).collect(Collectors.toList());
+        return listAll().parallelStream().filter(filter::matches).collect(Collectors.toList());
     }
 
     public Task get(final long taskId) {
@@ -59,21 +59,5 @@ public class TaskStore {
         entityManager.remove(managedTask);
         entityManager.flush();
     }
-
-    private boolean matches(Task task, Filter filter) {
-        if (filter.getText() != null && !task.getName().toLowerCase().contains(filter.getText())) {
-            return false;
-        }
-        if (!filter.getContexts().isEmpty() && task.getContexts().stream().noneMatch(filter.getContexts()::contains)) {
-            return false;
-        }
-        if (filter.getPriorityThreshold() != null) {
-            if (task.getPriority() == null || filter.getPriorityThreshold().compareTo(task.getPriority()) >= 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
 
 }

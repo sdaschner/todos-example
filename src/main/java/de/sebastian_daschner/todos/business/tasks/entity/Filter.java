@@ -27,6 +27,22 @@ public class Filter {
 
     private Integer priorityThreshold;
 
+    public boolean matches(final Task task) {
+        boolean matched = false;
+        if (text != null && !task.getName().toLowerCase().contains(text.toLowerCase())) {
+            return false;
+        }
+        if (!contexts.isEmpty() && task.getContexts().stream().noneMatch(contexts::contains)) {
+            return false;
+        }
+        if (priorityThreshold != null) {
+            if (task.getPriority() == null || priorityThreshold.compareTo(task.getPriority()) > 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public String getText() {
         return text;
     }

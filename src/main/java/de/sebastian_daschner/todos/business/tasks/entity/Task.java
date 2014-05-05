@@ -21,7 +21,7 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.Set;
 
-@NamedQuery(name = "Task.findAll", query = "SELECT t from tasks t ORDER BY t.finished ASC, t.updated DESC, t.name ASC")
+@NamedQuery(name = "Task.findAll", query = "SELECT t from tasks t ORDER BY t.finished ASC, t.priority DESC, t.updated DESC, t.name ASC")
 @Entity(name = "tasks")
 public class Task {
 
