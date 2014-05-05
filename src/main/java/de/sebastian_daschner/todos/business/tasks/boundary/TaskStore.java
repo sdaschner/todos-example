@@ -15,10 +15,12 @@
  */
 package de.sebastian_daschner.todos.business.tasks.boundary;
 
+import de.sebastian_daschner.todos.business.tasks.control.TaskCache;
 import de.sebastian_daschner.todos.business.tasks.entity.Filter;
 import de.sebastian_daschner.todos.business.tasks.entity.Task;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -27,11 +29,11 @@ import java.util.stream.Collectors;
 @Stateless
 public class TaskStore {
 
-    @PersistenceContext
-    EntityManager entityManager;
+    @Inject
+    TaskCache cache;
 
     public List<Task> listAll() {
-        return entityManager.createNamedQuery("Task.findAll").getResultList();
+        return cache.getAll();
     }
 
     public List<Task> filterAll(final Filter filter) {
@@ -39,25 +41,15 @@ public class TaskStore {
     }
 
     public Task get(final long taskId) {
-        return entityManager.find(Task.class, taskId);
+        return cache.get(taskId);
     }
 
     public long save(final Task task) {
-        final Task managedTask = entityManager.merge(task);
-        entityManager.flush();
-
-        return managedTask.getId();
-    }
-
-    public void update(final Task task) {
-        entityManager.merge(task);
-        entityManager.flush();
+        return cache.store(task);
     }
 
     public void delete(final long taskId) {
-        final Task managedTask = entityManager.find(Task.class, taskId);
-        entityManager.remove(managedTask);
-        entityManager.flush();
+        cache.remove(taskId);
     }
 
 }

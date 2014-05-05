@@ -1,15 +1,13 @@
 package de.sebastian_daschner.todos.business.tasks.boundary;
 
+import de.sebastian_daschner.todos.business.tasks.control.TaskCache;
 import de.sebastian_daschner.todos.business.tasks.entity.Filter;
 import de.sebastian_daschner.todos.business.tasks.entity.Task;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Matchers;
 import org.mockito.Mockito;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -22,11 +20,9 @@ public class TaskStoreTest {
     @Before
     public void setUp() {
         cut = new TaskStore();
-        cut.entityManager = Mockito.mock(EntityManager.class);
-        Query mockQuery = Mockito.mock(Query.class);
+        cut.cache = Mockito.mock(TaskCache.class);
 
-        Mockito.when(cut.entityManager.createNamedQuery(Matchers.anyString())).thenReturn(mockQuery);
-        Mockito.when(mockQuery.getResultList()).thenReturn(sampleTasks());
+        Mockito.when(cut.cache.getAll()).thenReturn(sampleTasks());
     }
 
     @Test
@@ -36,7 +32,7 @@ public class TaskStoreTest {
         List<Task> filteredTasks = cut.filterAll(filter);
 
         Assert.assertEquals(1, filteredTasks.size());
-        Assert.assertEquals(2L, filteredTasks.iterator().next().getId());
+        Assert.assertEquals(2L, filteredTasks.iterator().next().getId().longValue());
     }
 
     @Test
@@ -86,7 +82,7 @@ public class TaskStoreTest {
         List<Task> filteredTasks = cut.filterAll(filter);
 
         Assert.assertEquals(1, filteredTasks.size());
-        Assert.assertEquals(2L, filteredTasks.iterator().next().getId());
+        Assert.assertEquals(2L, filteredTasks.iterator().next().getId().longValue());
     }
 
     @Test

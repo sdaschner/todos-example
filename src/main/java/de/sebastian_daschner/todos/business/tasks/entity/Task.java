@@ -21,46 +21,30 @@ import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.Set;
 
-@NamedQuery(name = "Task.findAll", query = "SELECT t from tasks t ORDER BY t.finished ASC, t.priority DESC, t.updated DESC, t.name ASC")
-@Entity(name = "tasks")
 public class Task {
 
-    @Id
-    @GeneratedValue
-    private long id;
+    private Long id;
 
     @NotNull
     @Size(min = 1, max = 255)
-    @Basic(optional = false)
     private String name;
 
     @Contexts
-    @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> contexts;
 
     private Integer priority;
 
-    @Basic(optional = false)
     private boolean finished;
 
-    @Basic(optional = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private Date updated;
 
-    @Temporal(TemporalType.DATE)
     private Date dueDate;
 
-    @PrePersist
-    @PreUpdate
-    public void updateDate() {
-        this.updated = new Date();
-    }
-
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
