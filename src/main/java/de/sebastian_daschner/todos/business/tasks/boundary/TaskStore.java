@@ -21,7 +21,6 @@ import de.sebastian_daschner.todos.business.tasks.entity.Task;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
