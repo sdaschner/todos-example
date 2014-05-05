@@ -19,8 +19,8 @@ de.sd = {};
 de.sd.todos = {
 
     filterQuery: null,
-    tasksUrl: '/todos/resources/tasks/',
-    filterUrl: '/todos/resources/filters/',
+    tasksUrl: '/todos-example/resources/tasks/',
+    filterUrl: '/todos-example/resources/filters/',
 
     init: function() {
         de.sd.todos.bindEvents();

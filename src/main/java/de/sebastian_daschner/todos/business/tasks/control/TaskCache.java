@@ -32,6 +32,7 @@ public class TaskCache implements Serializable {
         final Long id;
         if (task.getId() == null) {
             id = nextTask.getAndIncrement();
+            task.setId(id);
         } else {
             id = task.getId();
         }
