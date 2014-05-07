@@ -346,7 +346,7 @@ de.sd.todos = {
                 content = '<div class="task'+(tasks[i].finished ? ' finished' : '')+'"><span class="taskContent">'+taskName
             ;
             for (var j in tasks[i].contexts) {
-                content += '<span class="context">@'+tasks[i].contexts[j]+'</span> ';
+                content += ' <span class="context">@'+tasks[i].contexts[j]+'</span>';
             }
             content += '</span>'
                 +'<a class="delete button" href="#" data-id="'+tasks[i].id+'" data-name="'+tasks[i].name+'">Delete</a>'
