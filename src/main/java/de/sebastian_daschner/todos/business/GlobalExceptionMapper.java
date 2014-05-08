@@ -26,7 +26,6 @@ import javax.ws.rs.ext.Provider;
 @Provider
 public class GlobalExceptionMapper implements ExceptionMapper<Exception> {
 
-    // TODO add constraint violation exception mapper as well
     @Override
     public Response toResponse(Exception exception) {
         return Response.status(Response.Status.BAD_REQUEST).header("X-message", exception.getMessage()).build();

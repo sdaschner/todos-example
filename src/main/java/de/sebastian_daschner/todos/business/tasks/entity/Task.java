@@ -15,7 +15,6 @@
  */
 package de.sebastian_daschner.todos.business.tasks.entity;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
