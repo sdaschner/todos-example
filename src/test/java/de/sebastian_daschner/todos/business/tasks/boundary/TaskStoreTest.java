@@ -26,6 +26,14 @@ public class TaskStoreTest {
     }
 
     @Test
+    public void testUpdate() {
+        final Task task = sampleTasks().iterator().next();
+        cut.save(task);
+
+        Assert.assertNotNull(task.getUpdated());
+    }
+
+    @Test
     public void testFilterContextMatch() {
         Filter filter = new Filter();
         filter.setContexts(new HashSet<>(Arrays.asList("abc")));

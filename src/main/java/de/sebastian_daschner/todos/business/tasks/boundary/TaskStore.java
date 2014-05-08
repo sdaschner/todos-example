@@ -23,6 +23,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,6 +46,7 @@ public class TaskStore {
     }
 
     public long save(final Task task) {
+        task.setUpdated(new Date());
         return cache.store(task);
     }
 
