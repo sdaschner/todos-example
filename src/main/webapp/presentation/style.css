@@ -81,6 +81,10 @@ a {
     background: linear-gradient(to bottom, #dcdcdc, #bababa);
 }
 
+.button:active {
+    background: linear-gradient(to top, #dcdcdc, #bababa);
+}
+
 #tasks .button {
     text-align: center;
     font-size: 0.75em;
